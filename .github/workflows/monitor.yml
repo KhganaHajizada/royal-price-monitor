@@ -18,13 +18,14 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout latest main
+        uses: actions/checkout@v5
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -51,5 +52,4 @@ jobs:
           fi
 
           git commit -m "Update Royal.az snapshot [skip ci]"
-          git pull --rebase origin main
           git push origin HEAD:main
