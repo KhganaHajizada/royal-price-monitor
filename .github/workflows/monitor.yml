@@ -35,21 +35,21 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python monitor.py
 
-      - name: Persist latest snapshot
+      - name: Persist latest state
         run: |
-          if git diff --quiet -- state/royal_snapshot.json 2>/dev/null && git ls-files --error-unmatch state/royal_snapshot.json >/dev/null 2>&1; then
-            echo "Snapshot unchanged."
+          if git diff --quiet -- state/ 2>/dev/null && git ls-files --error-unmatch state/royal_snapshot.json >/dev/null 2>&1; then
+            echo "State unchanged."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add state/royal_snapshot.json
+          git add state/
 
           if git diff --cached --quiet; then
             echo "Nothing to commit."
             exit 0
           fi
 
-          git commit -m "Update Royal.az snapshot [skip ci]"
+          git commit -m "Update Royal.az monitor state [skip ci]"
           git push origin HEAD:main
